@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สรุปยอดค้างชำระเงินห้อง (เรียงตามเลขที่)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff4757;
+            --text-dark: #2f3542;
+            --bg-body: #f1f2f6;
+        }
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f1f2f6;
+            padding-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            text-align: left;
+            color: #747d8c;
+            font-weight: 500;
+            padding: 12px;
+            border-bottom: 2px solid #f1f2f6;
+        }
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #f9f9f9;
+        }
+        tr:hover {
+            background-color: #fffafb;
+        }
+        .no-cell {
+            font-weight: 600;
+            color: #57606f;
+            width: 50px;
+        }
+        .debt-tag {
+            color: var(--primary-color);
+            font-weight: 600;
+            background: #fff0f0;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+        .week-text {
+            color: #a4b0be;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2 style="margin:0;">📝 รายชื่อค้างชำระเงินห้อง</h2>
+        <p style="color:#747d8c; margin:5px 0;">เรียงตามลำดับเลขที่ (เฉพาะคนจ่ายไม่ครบ)</p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>เลขที่</th>
+                <th>ชื่อ-นามสกุล</th>
+                <th>จ่ายแล้ว</th>
+                <th>ค้างจ่าย</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="no-cell">2</td><td>ด.ช.ชนะชัย พรมเมือง</td><td class="week-text">12/16</td><td><span class="debt-tag">40 ฿</span></td></tr>
+            <tr><td class="no-cell">4</td><td>ด.ช.ณัฐชรัฐ พรมใจ</td><td class="week-text">0/16</td><td><span class="debt-tag">160 ฿</span></td></tr>
+            <tr><td class="no-cell">6</td><td>ด.ช.ธนวรรธน์ คำหล้า</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
+            <tr><td class="no-cell">7</td><td>ด.ช.ธีรดา ใจคำปัน</td><td class="week-text">4/16</td><td><span class="debt-tag">120 ฿</span></td></tr>
+            <tr><td class="no-cell">11</td><td>ด.ญ.กัญญานัฐ สารข้าวดำ</td><td class="week-text">14/16</td><td><span class="debt-tag">20 ฿</span></td></tr>
+            <tr><td class="no-cell">12</td><td>ด.ญ.กำไลทอง อนันต์</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
+            <tr><td class="no-cell">13</td><td>ด.ญ.จันทร์จิดา สมศรี</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
+            <tr><td class="no-cell">14</td><td>ด.ญ.จิราพร แก้วคูณ</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
+            <tr><td class="no-cell">15</td><td>ด.ญ.ชฎาภรณ์ ไชยเจริญ</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
+            <tr><td class="no-cell">16</td><td>ด.ญ.ญาณสิริ คำภิละ</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
+            <tr><td class="no-cell">17</td><td>ด.ญ.ทิพาวรรณ เหมืองทองมูล</td><td class="week-text">9/16</td><td><span class="debt-tag">70 ฿</span></td></tr>
+            <tr><td class="no-cell">18</td><td>ด.ญ.ธัญญาลักษณ์ พิมลศักดิ์ภักดี</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
+            <tr><td class="no-cell">19</td><td>ด.ญ.นิชาพร วิบูลพรมงคล</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
+            <tr><td class="no-cell">20</td><td>ด.ญ.พรรณิกา แยโหล่ง</td><td class="week-text">12/16</td><td><span class="debt-tag">40 ฿</span></td></tr>
+            <tr><td class="no-cell">21</td><td>ด.ญ.พรสวรรค์ แก้วใจ</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
+            <tr><td class="no-cell">22</td><td>ด.ญ.พิมพ์ชนก พิมลธัญนัท</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
+            <tr><td class="no-cell">23</td><td>ด.ญ.พิมพ์พัส แก้วยิ่งยง</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
+            <tr><td class="no-cell">24</td><td>ด.ญ.รมิตา แก้วซ้อย</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
+            <tr><td class="no-cell">25</td><td>ด.ญ.รัญช์นารี ประมูลศิลป์</td><td class="week-text">9/16</td><td><span class="debt-tag">70 ฿</span></td></tr>
+            <tr><td class="no-cell">26</td><td>ด.ญ.วรปภา แสงใส</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
+            <tr><td class="no-cell">27</td><td>ด.ญ.สิริญา หิรัญถาวรกุล</td><td class="week-text">5/16</td><td><span class="debt-tag">110 ฿</span></td></tr>
+            <tr><td class="no-cell">29</td><td>ด.ญ.สุปรียา ข่มพิษ</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
+            <tr><td class="no-cell">30</td><td>ด.ญ.สุพัตรา ธนะสูตร</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
+            <tr><td class="no-cell">31</td><td>ด.ญ.สุภาวดี ไหวน้อย</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
+            <tr><td class="no-cell">32</td><td>ด.ช.เข็มรัตน์ ชาวเขียววงศ์</td><td class="week-text">10/16</td><td><span class="debt-tag">60 ฿</span></td></tr>
+            <tr><td class="no-cell">33</td><td>ด.ช.ภูริภัทร์ รูปคำ</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
+            <tr><td class="no-cell">34</td><td>ด.ญ.ธัญพร คำจริง</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
+            <tr><td class="no-cell">37</td><td>ด.ญ.ทักษพร วงศ์สุวรรณ</td><td class="week-text">4/16</td><td><span class="debt-tag">120 ฿</span></td></tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
