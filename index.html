@@ -3,119 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>สรุปยอดค้างชำระเงินห้อง (เรียงตามเลขที่)</title>
+    <title>ระบบรายงานการเงินห้องเรียน</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #ff4757;
+            --success-color: #2ed573;
+            --warning-color: #ff0202;
+            --info-color: #1e90ff;
             --text-dark: #2f3542;
-            --bg-body: #f1f2f6;
         }
-        body {
-            font-family: 'Kanit', sans-serif;
-            background-color: var(--bg-body);
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-        .header {
+        * { box-sizing: border-box; }
+        body { font-family: 'Kanit', sans-serif; background-color: var(--bg-body); margin: 0; padding: 15px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        
+        /* หัวข้อหลักจัดกลาง */
+        .main-title {
             text-align: center;
+            color: #000000;
+            margin: 20px 0 25px 0;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        @media (max-width: 600px) {
+            .main-title { font-size: 1.3rem; }
+        }
+
+        /* Dashboard Stats */
+        .dashboard { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 12px; 
+            margin-bottom: 20px; 
+        }
+        @media (min-width: 768px) {
+            .dashboard { grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        }
+
+        .stat-card { background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .stat-card h3 { margin: 0; font-size: 0.75rem; color: #747d8c; }
+        .stat-card .value { font-size: 1.3rem; font-weight: 600; color: var(--text-dark); margin: 5px 0; }
+        .progress-bar { height: 6px; background: #dfe4ea; border-radius: 5px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--success-color); width: 0%; transition: width 1s ease; }
+
+        /* Announcement Block */
+        .announcement-card {
+            background: #ffffff;
+            border-left: 6px solid var(--warning-color);
+            padding: 18px;
+            border-radius: 15px;
             margin-bottom: 25px;
-            border-bottom: 2px solid #f1f2f6;
-            padding-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .announcement-card h4 { margin: 0 0 8px 0; color: #d30000; display: flex; align-items: center; gap: 8px; font-size: 1rem; }
+        .announcement-card .content { margin: 0; color: #000000; font-size: 0.85rem; line-height: 1.6; }
+
+        /* Table Style */
+        .table-container { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 24px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
-        th {
-            text-align: left;
-            color: #747d8c;
-            font-weight: 500;
-            padding: 12px;
-            border-bottom: 2px solid #f1f2f6;
+        table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        th { text-align: left; color: #747d8c; padding: 12px; border-bottom: 2px solid #f1f2f6; font-size: 0.85rem; }
+        td { padding: 12px; border-bottom: 1px solid #f9f9f9; vertical-align: middle; font-size: 0.9rem; }
+        
+        .debt-tag { color: var(--primary-color); font-weight: 600; background: #fff0f0; padding: 4px 10px; border-radius: 8px; display: inline-block; font-size: 0.8rem; }
+        .paid-tag { color: var(--success-color); font-weight: 600; background: #eefdf5; padding: 4px 10px; border-radius: 8px; display: inline-block; font-size: 0.8rem; }
+        
+        .note-block { 
+            background: #ffeded; 
+            color: #d30000; 
+            padding: 4px 10px; 
+            border-radius: 8px; 
+            font-size: 0.75rem; 
+            border: 1px solid #ffa7a7;
+            display: inline-block;
+            white-space: nowrap;
         }
-        td {
-            padding: 14px 12px;
-            border-bottom: 1px solid #f9f9f9;
+
+        /* ส่วน Copyright แบบมีกรอบ */
+        .footer-box { 
+            text-align: center; 
+            margin: 30px auto; 
+            padding: 15px; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            max-width: fit-content;
         }
-        tr:hover {
-            background-color: #fffafb;
-        }
-        .no-cell {
-            font-weight: 600;
-            color: #57606f;
-            width: 50px;
-        }
-        .debt-tag {
-            color: var(--primary-color);
-            font-weight: 600;
-            background: #fff0f0;
-            padding: 4px 10px;
-            border-radius: 8px;
-        }
-        .week-text {
-            color: #a4b0be;
-            font-size: 0.9em;
-        }
+        .footer-text { color: #303030(69, 69, 69, 0.8); font-size: 0.8rem; margin: 0; line-height: 1.6; }
+        .footer-text b { color: #303030; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
-        <h2 style="margin:0;">📝 รายชื่อค้างชำระเงินห้อง</h2>
-        <p style="color:#747d8c; margin:5px 0;">เรียงตามลำดับเลขที่ (เฉพาะคนจ่ายไม่ครบ)</p>
+    <h1 class="main-title">ระบบรายงานการเงินห้องเรียน</h1>
+
+    <div class="dashboard" id="dashboard"></div>
+
+    <div class="announcement-card">
+        <h4>📢 ข้อกำหนดจากผู้ดูแลระบบ</h4>
+        <div class="content">
+            เริ่มเก็บเงิน: 10 พ.ค. 2568 (00.00 น.) | สิ้นสุด: 27 ก.พ. 2569 (24.59 น.)<br>
+            - กรุณาชำระเงินก่อนวันที่ 27 ก.พ. 69 (12.40 น.) <br>
+            - ยอดค้างเกิน 100 บาท ต้องจ่ายให้เหลือต่ำกว่า 50% ภายใน 23 ก.พ. 69 <br>
+            - ชำระผ่านการโอนต้องส่งสลิปเป็นหลักฐานทุกครั้ง <br>
+            - ข้อมูลอัปเดตล่าสุด: 9 กุมภาพันธ์ 2569 <br>
+            - ยอดค้างเกิน 100 บาท ติดต่อเหรัญญิกเพื่อตกลงวันจ่าย <br>
+            <br><b>** หมายเหตุสำคัญ **</b><br>
+            - หากวันที่ 25 ก.พ. ยังไม่มีความคืบหน้า จะแจ้งครูที่ปรึกษาและผู้ปกครองทราบ<br>
+            - อัปเดตยอดเงินเวลา 20.00 - 21.00 น. ของทุกวัน <br>
+            <b>** ดูผ่านมือถือให้ดูแบบแนวนอน เพื่อง่ายต่อการดู **</b> <br>
+        </div>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>เลขที่</th>
-                <th>ชื่อ-นามสกุล</th>
-                <th>จ่ายแล้ว</th>
-                <th>ค้างจ่าย</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td class="no-cell">2</td><td>ด.ช.ชนะชัย พรมเมือง</td><td class="week-text">12/16</td><td><span class="debt-tag">40 ฿</span></td></tr>
-            <tr><td class="no-cell">4</td><td>ด.ช.ณัฐชรัฐ พรมใจ</td><td class="week-text">0/16</td><td><span class="debt-tag">160 ฿</span></td></tr>
-            <tr><td class="no-cell">6</td><td>ด.ช.ธนวรรธน์ คำหล้า</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
-            <tr><td class="no-cell">7</td><td>ด.ช.ธีรดา ใจคำปัน</td><td class="week-text">4/16</td><td><span class="debt-tag">120 ฿</span></td></tr>
-            <tr><td class="no-cell">12</td><td>ด.ญ.กำไลทอง อนันต์</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
-            <tr><td class="no-cell">13</td><td>ด.ญ.จันทร์จิดา สมศรี</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
-            <tr><td class="no-cell">14</td><td>ด.ญ.จิราพร แก้วคูณ</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
-            <tr><td class="no-cell">15</td><td>ด.ญ.ชฎาภรณ์ ไชยเจริญ</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
-            <tr><td class="no-cell">16</td><td>ด.ญ.ญาณสิริ คำภิละ</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
-            <tr><td class="no-cell">17</td><td>ด.ญ.ทิพาวรรณ เหมืองทองมูล</td><td class="week-text">9/16</td><td><span class="debt-tag">70 ฿</span></td></tr>
-            <tr><td class="no-cell">18</td><td>ด.ญ.ธัญญาลักษณ์ พิมลศักดิ์ภักดี</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
-            <tr><td class="no-cell">19</td><td>ด.ญ.นิชาพร วิบูลพรมงคล</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
-            <tr><td class="no-cell">20</td><td>ด.ญ.พรรณิกา แยโหล่ง</td><td class="week-text">12/16</td><td><span class="debt-tag">40 ฿</span></td></tr>
-            <tr><td class="no-cell">21</td><td>ด.ญ.พรสวรรค์ แก้วใจ</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
-            <tr><td class="no-cell">22</td><td>ด.ญ.พิมพ์ชนก พิมลธัญนัท</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
-            <tr><td class="no-cell">23</td><td>ด.ญ.พิมพ์พัส แก้วยิ่งยง</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
-            <tr><td class="no-cell">24</td><td>ด.ญ.รมิตา แก้วซ้อย</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
-            <tr><td class="no-cell">25</td><td>ด.ญ.รัญช์นารี ประมูลศิลป์</td><td class="week-text">9/16</td><td><span class="debt-tag">70 ฿</span></td></tr>
-            <tr><td class="no-cell">26</td><td>ด.ญ.วรปภา แสงใส</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
-            <tr><td class="no-cell">27</td><td>ด.ญ.สิริญา หิรัญถาวรกุล</td><td class="week-text">5/16</td><td><span class="debt-tag">110 ฿</span></td></tr>
-            <tr><td class="no-cell">29</td><td>ด.ญ.สุปรียา ข่มพิษ</td><td class="week-text">3/16</td><td><span class="debt-tag">130 ฿</span></td></tr>
-            <tr><td class="no-cell">30</td><td>ด.ญ.สุพัตรา ธนะสูตร</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
-            <tr><td class="no-cell">31</td><td>ด.ญ.สุภาวดี ไหวน้อย</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
-            <tr><td class="no-cell">32</td><td>ด.ช.เข็มรัตน์ ชาวเขียววงศ์</td><td class="week-text">10/16</td><td><span class="debt-tag">60 ฿</span></td></tr>
-            <tr><td class="no-cell">33</td><td>ด.ช.ภูริภัทร์ รูปคำ</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
-            <tr><td class="no-cell">34</td><td>ด.ญ.ธัญพร คำจริง</td><td class="week-text">7/16</td><td><span class="debt-tag">90 ฿</span></td></tr>
-            <tr><td class="no-cell">37</td><td>ด.ญ.ทักษพร วงศ์สุวรรณ</td><td class="week-text">4/16</td><td><span class="debt-tag">120 ฿</span></td></tr>
-        </tbody>
-    </table>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px;">เลขที่</th>
+                    <th>ชื่อ-นามสกุล</th>
+                    <th>หมายเหตุ</th> 
+                    <th style="width: 80px;">สัปดาห์</th>
+                    <th style="width: 100px;">ยอดค้าง</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <div class="footer-box">
+        <div class="footer-text">
+            <b>&copy; 2026 ระบบรายงานการเงินห้องเรียน | Developer by KHEMMARAT&Gemini</b>
+            <p>ครูที่ปรึกษา นางสาวนิตยา ปันศิล และ นายเอก กีณณเกชยางค์กูร</p>
+        </div>
+    </div>
 </div>
 
-</body>
+<script>
+    const students = [
+        { no: 1, name: "ด.ช.จิรายุ วิเศษเพิ่มพร", paid: 16, note: "" },
+        { no: 2, name: "ด.ช.ชนะชัย พรมเมือง", paid: 12, note: "" },
+        { no: 3, name: "ด.ช.ชวัลวิทย์ คืนมาเมือง", paid: 16, note: "" },
+        { no: 4, name: "ด.ช.ณัฐชรัฐ พรมใจ", paid: 0, note: "ยังไม่ติดต่อ" },
+        { no: 5, name: "ด.ช.ธนปพน ส่างกอน", paid: 16, note: "" },
+        { no: 6, name: "ด.ช.ธนวรรธน์ คำหล้า", paid: 3, note: "ยังไม่ติดต่อ" },
+        { no: 7, name: "ด.ช.ธีรดา ใจคำปัน", paid: 4, note: "ยังไม่ติดต่อ" },
+        { no: 8, name: "ด.ช.ปฏิพัทธ์ คุณยศยิ่ง", paid: 16, note: "" },
+        { no: 9, name: "ด.ช.สกลวัฒน์ ชุ่มใจ", paid: 16, note: "" },
+        { no: 10, name: "ด.ช.สุรเดช เบกากู่", paid: 16, note: "" },
+        { no: 11, name: "ด.ญ.กัญญาณัฐ สารข้าวดำ", paid: 14, note: "" },
+        { no: 12, name: "ด.ญ.กำไลทอง อนันต์", paid: 3, note: "ยังไม่ติดต่อ" },
+        { no: 13, name: "ด.ญ.จันทร์จิดา สมศรี", paid: 3, note: "ยังไม่ติดต่อ" },
+        { no: 14, name: "ด.ญ.จิราพร แก้วคูณ", paid: 3, note: "ยังไม่ติดต่อ" },
+        { no: 15, name: "ด.ญ.ชฎาภรณ์ ไชยเจริญ", paid: 3, note: "ยังไม่ติดต่อ" },
+        { no: 16, name: "ด.ญ.ญาณสิริ คำภิละ", paid: 7, note: "" },
+        { no: 17, name: "ด.ญ.ทิพาวรรณ เหมืองทองมูล", paid: 9, note: "" },
+        { no: 18, name: "ด.ญ.ธัญญาลักษณ์ พิมลศักดิ์ภักดี", paid: 7, note: "" },
+        { no: 19, name: "ด.ญ.นิชาพร วิบูลพรมงคล", paid: 7, note: "" },
+        { no: 20, name: "ด.ญ.พรรณิกา แยโหล่ง", paid: 12, note: "" },
+        { no: 21, name: "ด.ญ.พรสวรรค์ แก้วใจ", paid: 7, note: "" },
+        { no: 22, name: "ด.ญ.พิมพ์ชนก พิมลธัญนัท", paid: 7, note: "" },
+        { no: 23, name: "ด.ญ.พิมพ์ลพัส แก้วยิ่งยง", paid: 3, note: "ยังไม่ติดต่อ" },
+        { no: 24, name: "ด.ญ.รมิตา แก้วซ้อย", paid: 7, note: "**เหรัญญิก**" },
+        { no: 25, name: "ด.ญ.รัญช์นารี ประมูลศิลป์", paid: 9, note: "" },
+        { no: 26, name: "ด.ญ.วรปภา แสงใส", paid: 7, note: "" },
+        { no: 27, name: "ด.ญ.สิริญา หิรัญถาวรกุล", paid: 5, note: "ยังไม่ติดต่อ" },
+        { no: 28, name: "ด.ญ.สุกฤตา สระทองเพ็ชร", paid: 16, note: "" },
+        { no: 29, name: "ด.ญ.สุปรียา ข่มพิษ", paid: 3, note: "ยังไม่ติดต่อ" },
+        { no: 30, name: "ด.ญ.สุพัตรา ธนะสูตร", paid: 7, note: "" },
+        { no: 31, name: "ด.ญ.สุภาวดี ไหวน้อย", paid: 7, note: "" },
+        { no: 32, name: "ด.ช.เข็มรัตน์ ชาวเขียววงศ์", paid: 10, note: "**ผู้ดูแลระบบ**" },
+        { no: 33, name: "ด.ช.ภูริภัทร์ รูปคำ", paid: 7, note: "" },
+        { no: 34, name: "ด.ญ.ธัญพร คำจริง", paid: 7, note: "" },
+        { no: 35, name: "ด.ช.วุฒิชัย วอง", paid: 16, note: "" },
+        { no: 36, name: "ด.ช.พงศ์สิริพร สาวงค์", paid: 16, note: "" },
+        { no: 37, name: "ด.ญ.ทักษพร วงศ์สุวรรณ", paid: 4, note: "ยังไม่ติดต่อ" }
+    ];
 
+    const targetWeeks = 16;
+    const pricePerWeek = 10;
+    let totalCollected = 0;
+    const tbody = document.getElementById('tableBody');
+
+    students.forEach(std => {
+        const collected = std.paid * pricePerWeek;
+        const debt = (targetWeeks * pricePerWeek) - collected;
+        totalCollected += collected;
+        const noteBlock = std.note ? `<div class="note-block">${std.note}</div>` : "";
+
+        tbody.innerHTML += `
+            <tr>
+                <td><b>${std.no}</b></td>
+                <td>${std.name}</td>
+                <td>${noteBlock}</td>
+                <td style="color:#747d8c">${std.paid}/16</td>
+                <td>${debt > 0 ? `<span class="debt-tag">${debt} ฿</span>` : `<span class="paid-tag">ยอดครบ ✅</span>`}</td>
+            </tr>
+        `;
+    });
+
+    const totalTarget = students.length * 160;
+    const percent = ((totalCollected / totalTarget) * 100).toFixed(0);
+    document.getElementById('dashboard').innerHTML = `
+        <div class="stat-card"><h3>นักเรียน</h3><div class="value">${students.length} คน</div></div>
+        <div class="stat-card"><h3>เป้าหมาย</h3><div class="value" style="color:#ff4757">${totalTarget.toLocaleString()}</div></div>
+        <div class="stat-card"><h3>เก็บได้</h3><div class="value">${totalCollected.toLocaleString()}</div></div>
+        <div class="stat-card"><h3>สำเร็จ</h3><div class="value">${percent}%</div><div class="progress-bar"><div class="progress-fill" style="width:${percent}%"></div></div></div>
+    `;
+</script>
+
+</body>
 </html>
